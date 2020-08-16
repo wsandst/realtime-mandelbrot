@@ -28,7 +28,7 @@ class Renderer {
 public:
 	//Render settings
 	const char* windowTitle = "OpenGL Compute Shader Starter";
-	const bool VSYNCEnabled = true;
+	const bool VSYNCEnabled = false;
 	const int MSAALevel = 1; //MSAA Antialiasing: 1 for none, 2 for 4x, 4 for 16x
 	//Toggleables from within the engine
 	bool displayWireframes = false;
