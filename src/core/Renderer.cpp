@@ -60,6 +60,8 @@ void Renderer::draw()
 {
 	screenComputeShader.use();
 
+	screenComputeShader.setInt("ITERATIONS", camera.iterations);
+
 	screenComputeShader.setFloat("viewX", camera.getPosition().x);
 	screenComputeShader.setFloat("viewY", camera.getPosition().z);
 

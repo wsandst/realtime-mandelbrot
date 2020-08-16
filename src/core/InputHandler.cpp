@@ -33,6 +33,14 @@ void InputHandler::handleInput(float deltaTime)
 			case SDLK_d: //Move right
 				camera.keyRight = true;
 				break;
+			case SDLK_q: //Decrease iterations
+				if (camera.iterations == 0)
+					camera.iterations = 1;
+				camera.iterations *= 2;
+				break;
+			case SDLK_e: //Increase iterations
+				camera.iterations /= 2;
+				break;
 			case SDLK_SPACE: //Move up
 				camera.keyUp = true;
 				break;

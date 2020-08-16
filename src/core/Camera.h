@@ -26,6 +26,7 @@ public:
 	double zoom = 1.0f;
 	double posX = MANDELBROT_X;
 	double posY = MANDELBROT_Y;
+	int iterations = 50;
 
 	//Camera variables
 	float FOV = 45.0f, yaw = 90.0f, pitch = 0.0f;

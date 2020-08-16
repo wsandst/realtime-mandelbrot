@@ -10,6 +10,20 @@ uniform float viewHeight = 3;
 
 uniform int ITERATIONS = 50;
 
+#define M_PI 3.1415926535897932384626433832795
+#define M_LOG2 0.30102999566
+
+vec3 getColor(float iterations, float magSq)
+{
+    iterations = iterations - log2(log2(magSq)) + 4.0;
+    //iterations = iterations - 1 - log(log(sqrt(magSq)))/M_LOG2;
+    vec3 color;
+    color.z = (sin(iterations / 10 + 2 * M_PI / 3) + 1) / 2;
+    color.x = (sin(iterations / 10 + 4 * M_PI / 3) + 1) / 2;
+    color.y = (sin(iterations / 10) + 1) / 2;
+    return color;
+}
+
 vec3 mandelbrot(vec2 pos)
 {
   float u = 0.0;
@@ -31,8 +45,8 @@ vec3 mandelbrot(vec2 pos)
     return vec3(0.0, 0.0, 0.0);
   }
   else { //Exterior
-    float color = 1 - float(i) / ITERATIONS;
-    return vec3(color);
+    //float color = 1 - float(i) / ITERATIONS;
+    return getColor(float(i), u2 + v2);
   };
 }
 
