@@ -8,9 +8,9 @@ const float viewWidth = 3;
 const float viewY = -1.5;
 const float viewHeight = 3;
 
-const int ITERATIONS = 10000;
+const int ITERATIONS = 50;
 
-vec4 mandelbrot(vec2 pos)
+vec3 mandelbrot(vec2 pos)
 {
   float u = 0.0;
   float v= 0.0;
@@ -28,17 +28,18 @@ vec4 mandelbrot(vec2 pos)
   };
 
   if (i >= ITERATIONS) { //Interior
-    return vec4(0.0, 0.0, 0.0, 1.0);
+    return vec3(0.0, 0.0, 0.0);
   }
   else { //Exterior
-    return vec4(1.0, 1.0, 1.0, 1.0);
+    float color = 1 - float(i) / ITERATIONS;
+    return vec3(color);
   };
 }
 
 //Return a color based on the current float pos or integer pixel pos
 vec4 draw(vec2 pos, ivec2 pixel)
 {
-  return mandelbrot(pos);//vec4(pos.x, 0.0, pos.y, 1.0);
+  return vec4(mandelbrot(pos), 1.0);//vec4(pos.x, 0.0, pos.y, 1.0);
 }
 
 layout (local_size_x = 16, local_size_y = 8) in;
