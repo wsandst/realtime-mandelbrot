@@ -3,12 +3,12 @@
 //Output texture
 layout(binding = 0, rgba32f) uniform writeonly image2D framebuffer;
 
-const float viewX = -2.25; //X: -2.25 to 0.75. Y: -1.5 to 1.5
-const float viewWidth = 3;
-const float viewY = -1.5;
-const float viewHeight = 3;
+uniform float viewX = -2.25; //X: -2.25 to 0.75. Y: -1.5 to 1.5
+uniform float viewWidth = 3;
+uniform float viewY = -1.5;
+uniform float viewHeight = 3;
 
-const int ITERATIONS = 50;
+uniform int ITERATIONS = 50;
 
 vec3 mandelbrot(vec2 pos)
 {

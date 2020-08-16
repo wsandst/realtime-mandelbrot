@@ -135,8 +135,14 @@ void InputHandler::handleInput(float deltaTime)
 				SDL_GetRelativeMouseState(&relativeX, &relativeY);
 				//std::cout << relativeX << " " << relativeY << "\n";
 
-				camera.updateView(relativeX * sensitivity, -relativeY * sensitivity);
+				//camera.updateView(relativeX * sensitivity, -relativeY * sensitivity);
 			}
+			break;
+		case SDL_MOUSEWHEEL:
+			if (sdlEvent.wheel.y == -1)
+				camera.modifyMandelbrotZoom(1.03);
+			else if (sdlEvent.wheel.y == 1)
+				camera.modifyMandelbrotZoom(0.97);
 			break;
 		case SDL_WINDOWEVENT:
 			switch (sdlEvent.window.event) {

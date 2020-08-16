@@ -4,11 +4,14 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 
+const float MANDELBROT_X = -2.25;
+const float MANDELBROT_Y = -1.5;
+
 ///@brief A class for representing the OpenGL camera
 class Camera
 {
 private:
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 cameraPos = glm::vec3(-2.25f, 0.0f, -1.5f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4x4 viewMatrix, projectionMatrix;
@@ -16,11 +19,16 @@ private:
 public:
 	//Camera settings
 	float sensitivity = 0.25f;
-	float maxVelocity = 0.25f;
-	float acceleration = 0.1;
+	float maxVelocity = 0.05f;
+	float acceleration = 0.003f;
+
+	//Mandelbrot related
+	double zoom = 1.0f;
+	double posX = MANDELBROT_X;
+	double posY = MANDELBROT_Y;
 
 	//Camera variables
-	float FOV = 45.0f, yaw = -90.0f, pitch = 0.0f;
+	float FOV = 45.0f, yaw = 90.0f, pitch = 0.0f;
 	int windowWidth, windowHeight;
 	float cameraStep = 1;
 
@@ -69,8 +77,8 @@ public:
 	/// and then moves the camera based on the velocity
 	void move()
 	{
-		moveKey(keyRight, acceleration, 0, 0, velocity.x);
-		moveKey(keyLeft, -acceleration, 0, 0, -velocity.x);
+		moveKey(keyRight, -acceleration, 0, 0, -velocity.x);
+		moveKey(keyLeft, acceleration, 0, 0, velocity.x);
 		moveKey(keyUp, 0, acceleration, 0, velocity.y);
 		moveKey(keyDown, 0, -acceleration, 0, -velocity.y);
 		moveKey(keyForward, 0, 0, acceleration, velocity.z);
@@ -154,6 +162,16 @@ public:
 		else if (yaw <= 45 || yaw >= 315) //+x
 			return "WEST";
 		return "ERROR";
+	}
+
+	void modifyMandelbrotZoom(float zoomFactor)
+	{
+		zoom *= zoomFactor;
+		maxVelocity *= zoomFactor;
+		acceleration *= zoomFactor; 
+		float zoomChange = (zoom / zoomFactor) * 1.5 - zoom * 1.5;
+		cameraPos.x += zoomChange;
+		cameraPos.z += zoomChange;
 	}
 
 	Camera(int windowWidth, int windowHeight)

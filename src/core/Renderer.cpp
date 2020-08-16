@@ -60,6 +60,12 @@ void Renderer::draw()
 {
 	screenComputeShader.use();
 
+	screenComputeShader.setFloat("viewX", camera.getPosition().x);
+	screenComputeShader.setFloat("viewY", camera.getPosition().z);
+
+	screenComputeShader.setFloat("viewWidth", camera.zoom * 3);
+	screenComputeShader.setFloat("viewHeight", camera.zoom * 3);
+
 	int framebufferTexLocation = glGetUniformLocation(screenComputeShader.ID, "framebuffer");
 	glUniform1i(framebufferTexLocation, 0);
 
