@@ -58,12 +58,17 @@ void Renderer::render()
 
 void Renderer::draw()
 {
+	double viewX = camera.posX + camera.getPosition().x * camera.zoom;
+	double viewY = camera.posY + camera.getPosition().z * camera.zoom;
+
 	screenComputeShader.use();
 
 	screenComputeShader.setInt("ITERATIONS", camera.iterations);
 
-	screenComputeShader.setFloat("viewX", camera.getPosition().x);
-	screenComputeShader.setFloat("viewY", camera.getPosition().z);
+	screenComputeShader.setFloat("viewX", viewX);
+	screenComputeShader.setFloat("viewY", viewY);
+
+	//std::cout << viewX << " " << viewY << " c:" << camera.getPosition().x << " " << camera.getPosition().z << "\n";
 
 	screenComputeShader.setFloat("viewWidth", camera.zoom * 3);
 	screenComputeShader.setFloat("viewHeight", camera.zoom * 3);

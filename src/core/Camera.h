@@ -11,7 +11,7 @@ const float MANDELBROT_Y = -1.5;
 class Camera
 {
 private:
-	glm::vec3 cameraPos = glm::vec3(-2.25f, 0.0f, -1.5f);
+	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::mat4x4 viewMatrix, projectionMatrix;
@@ -168,11 +168,11 @@ public:
 	void modifyMandelbrotZoom(float zoomFactor)
 	{
 		zoom *= zoomFactor;
-		maxVelocity *= zoomFactor;
-		acceleration *= zoomFactor; 
-		float zoomChange = (zoom / zoomFactor) * 1.5 - zoom * 1.5;
-		cameraPos.x += zoomChange;
-		cameraPos.z += zoomChange;
+		double zoomChange = (zoom / zoomFactor) * 1.5 - zoom * 1.5; //Zoom width delta / 2, to adjust for center zooming
+		posX = posX + cameraPos.x * zoom + zoomChange;
+		posY = posY + cameraPos.z * zoom + zoomChange;
+		cameraPos.x = 0;
+		cameraPos.z = 0;
 	}
 
 	Camera(int windowWidth, int windowHeight)
