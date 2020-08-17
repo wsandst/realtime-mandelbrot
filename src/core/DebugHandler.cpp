@@ -42,16 +42,13 @@ void DebugHandler::updateText()
         upperRightContent << int(renderer.fps);
         
         //Upper left counter, coords, camera angles
-        upperLeftContent.precision(3); //Change float precision when converting to string
+        upperLeftContent.precision(10); //Change float precision when converting to string
         upperLeftContent << std::fixed;
-        upperLeftContent << "x: " << renderer.camera.getPosition().x << ", ";
-        upperLeftContent << "y: " << renderer.camera.getPosition().y << ", ";
-        upperLeftContent << "z: " << renderer.camera.getPosition().z << "\n";
+        upperLeftContent << "x: " << renderer.mandelbrot.getViewX(renderer.camera.getPosition().x) << ", ";
+        upperLeftContent << "y: " << renderer.mandelbrot.getViewY(renderer.camera.getPosition().z) << "\n";
+        upperLeftContent << "zoom: " << renderer.mandelbrot.zoom << "\n";
+        upperLeftContent << "iterations: " << renderer.mandelbrot.iterations << "\n";
 
-        upperLeftContent.precision(1);
-        upperLeftContent << renderer.camera.getCardinalDirection() << ", ";
-        upperLeftContent << "yaw: " << renderer.camera.yaw << ", ";
-        upperLeftContent << "pitch: " << renderer.camera.pitch << "\n";
         upperLeftContent.precision(2);
         upperLeftContent << "performance: " << renderer.deltaTime << "ms\n";
         upperLeftContent << "render: " << renderer.renderPerformanceMs << " ms\n";
