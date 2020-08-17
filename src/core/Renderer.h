@@ -18,6 +18,8 @@
 #include "VBOWrapper.h"
 #include "TextHandler.h"
 
+#include "../MandelbrotFractal.h"
+
 #include <vector>
 #include <algorithm>
 #include <chrono>
@@ -45,6 +47,7 @@ public:
 	float renderPerformanceMs = 0;
 
     Camera camera;
+	MandelbrotFractal mandelbrot;
 
 	Renderer(int windowWidth, int windowHeight);
 

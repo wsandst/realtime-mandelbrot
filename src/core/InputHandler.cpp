@@ -34,12 +34,12 @@ void InputHandler::handleInput(float deltaTime)
 				camera.keyRight = true;
 				break;
 			case SDLK_q: //Decrease iterations
-				if (camera.iterations == 0)
-					camera.iterations = 1;
-				camera.iterations *= 2;
+				if (renderer.mandelbrot.iterations == 0)
+					renderer.mandelbrot.iterations = 1;
+				renderer.mandelbrot.iterations *= 2;
 				break;
 			case SDLK_e: //Increase iterations
-				camera.iterations /= 2;
+				renderer.mandelbrot.iterations /= 2;
 				break;
 			case SDLK_SPACE: //Move up
 				camera.keyUp = true;
@@ -148,9 +148,10 @@ void InputHandler::handleInput(float deltaTime)
 			break;
 		case SDL_MOUSEWHEEL:
 			if (sdlEvent.wheel.y == -1)
-				camera.modifyMandelbrotZoom(1.03);
+				renderer.mandelbrot.zoomByFactor(1.03, camera.getPosition().x, camera.getPosition().z);
 			else if (sdlEvent.wheel.y == 1)
-				camera.modifyMandelbrotZoom(0.97);
+				renderer.mandelbrot.zoomByFactor(0.97, camera.getPosition().x, camera.getPosition().z);
+			camera.setPosition(0, 0, 0);
 			break;
 		case SDL_WINDOWEVENT:
 			switch (sdlEvent.window.event) {

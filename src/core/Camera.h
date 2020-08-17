@@ -4,9 +4,6 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 
-const float MANDELBROT_X = -2.25;
-const float MANDELBROT_Y = -1.5;
-
 ///@brief A class for representing the OpenGL camera
 class Camera
 {
@@ -20,13 +17,7 @@ public:
 	//Camera settings
 	float sensitivity = 0.25f;
 	float maxVelocity = 0.05f;
-	float acceleration = 0.003f;
-
-	//Mandelbrot related
-	double zoom = 1.0f;
-	double posX = MANDELBROT_X;
-	double posY = MANDELBROT_Y;
-	int iterations = 50;
+	float acceleration = 0.002f;
 
 	//Camera variables
 	float FOV = 45.0f, yaw = 90.0f, pitch = 0.0f;
@@ -151,6 +142,13 @@ public:
 		return cameraPos;
 	}
 
+	void setPosition(float x, float y, float z)
+	{
+		cameraPos.x = x;
+		cameraPos.y = y;
+		cameraPos.z = z;
+	}
+
 	///@brief Returns a string of the cardinal viewing direction, ie north/south/east/west
 	std::string getCardinalDirection()
 	{
@@ -163,16 +161,6 @@ public:
 		else if (yaw <= 45 || yaw >= 315) //+x
 			return "WEST";
 		return "ERROR";
-	}
-
-	void modifyMandelbrotZoom(float zoomFactor)
-	{
-		zoom *= zoomFactor;
-		double zoomChange = (zoom / zoomFactor) * 1.5 - zoom * 1.5; //Zoom width delta / 2, to adjust for center zooming
-		posX = posX + cameraPos.x * zoom + zoomChange;
-		posY = posY + cameraPos.z * zoom + zoomChange;
-		cameraPos.x = 0;
-		cameraPos.z = 0;
 	}
 
 	Camera(int windowWidth, int windowHeight)

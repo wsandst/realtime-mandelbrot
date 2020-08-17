@@ -58,20 +58,18 @@ void Renderer::render()
 
 void Renderer::draw()
 {
-	double viewX = camera.posX + camera.getPosition().x * camera.zoom;
-	double viewY = camera.posY + camera.getPosition().z * camera.zoom;
+	double viewX = mandelbrot.posX + camera.getPosition().x * mandelbrot.zoom;
+	double viewY = mandelbrot.posY + camera.getPosition().z * mandelbrot.zoom;
 
 	screenComputeShader.use();
 
-	screenComputeShader.setInt("ITERATIONS", camera.iterations);
+	screenComputeShader.setInt("ITERATIONS", mandelbrot.iterations);
 
 	screenComputeShader.setFloat("viewX", viewX);
 	screenComputeShader.setFloat("viewY", viewY);
 
-	//std::cout << viewX << " " << viewY << " c:" << camera.getPosition().x << " " << camera.getPosition().z << "\n";
-
-	screenComputeShader.setFloat("viewWidth", camera.zoom * 3);
-	screenComputeShader.setFloat("viewHeight", camera.zoom * 3);
+	screenComputeShader.setFloat("viewWidth", mandelbrot.zoom * 3);
+	screenComputeShader.setFloat("viewHeight", mandelbrot.zoom * 3);
 
 	int framebufferTexLocation = glGetUniformLocation(screenComputeShader.ID, "framebuffer");
 	glUniform1i(framebufferTexLocation, 0);
