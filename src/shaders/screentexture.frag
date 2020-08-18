@@ -3,9 +3,11 @@
 in vec2 v_tex;
 uniform sampler2D texSampler;
 
-#define EXPOSURE 1
+#define GAMMA_CORRECTION 0
 #define GAMMA 2.2
-#define HDR 1
+
+#define HDR 0
+#define EXPOSURE 1
 
 out vec4 color;
 
@@ -21,8 +23,12 @@ void main()
     
         color = vec4(mapped, 1.0);
     #else
-        color = texture(texSampler, v_tex);
+        #if GAMMA_CORRECTION
+        vec3 sampledColor = texture(texSampler, v_tex).rgb;
         //Gamma correction
-        color = pow(color, vec3(1.0 / GAMMA));
+        color = vec4(pow(sampledColor, vec3(1.0 / GAMMA)), 1.0);
+        #else
+            color = texture(texSampler, v_tex);
+        #endif
     #endif
 }

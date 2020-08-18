@@ -61,7 +61,10 @@ void Renderer::draw()
 	screenComputeShader.use();
 
 	screenComputeShader.setInt("ITERATIONS", mandelbrot.iterations);
+	screenComputeShader.setInt("COLOR_ITER_LOOP", int(mandelbrot.color.iterationLoop));
+	screenComputeShader.setFloat("COLOR_EXPONENT", mandelbrot.color.exponent);
 
+	//Camera related
 	screenComputeShader.setFloat("viewX", mandelbrot.getViewX(camera.getPosition().x));
 	screenComputeShader.setFloat("viewY",  mandelbrot.getViewY(camera.getPosition().z));
 

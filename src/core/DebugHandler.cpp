@@ -46,10 +46,12 @@ void DebugHandler::updateText()
         upperLeftContent << std::fixed;
         upperLeftContent << "x: " << renderer.mandelbrot.getViewX(renderer.camera.getPosition().x) << ", ";
         upperLeftContent << "y: " << renderer.mandelbrot.getViewY(renderer.camera.getPosition().z) << "\n";
-        upperLeftContent << "zoom: " << renderer.mandelbrot.zoom << "\n";
         upperLeftContent << "iterations: " << renderer.mandelbrot.iterations << "\n";
 
         upperLeftContent.precision(2);
+        upperLeftContent << "zoom: " << -std::log(renderer.mandelbrot.zoom) + 1 << "\n";
+        upperLeftContent << "colorexp: " << renderer.mandelbrot.color.exponent << "\n";
+        upperLeftContent << "colorloop: " << renderer.mandelbrot.color.iterationLoop << "\n";
         upperLeftContent << "performance: " << renderer.deltaTime << "ms\n";
         upperLeftContent << "render: " << renderer.renderPerformanceMs << " ms\n";
         upperLeftContent << "input: " << inputHandler.inputPerformanceMs << " ms\n";
