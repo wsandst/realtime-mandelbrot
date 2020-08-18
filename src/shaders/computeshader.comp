@@ -54,7 +54,7 @@ vec3 mandelbrot(vec2 pos)
   else { //Exterior
     //float color = 1 - float(i) / ITERATIONS;
     float smoothI = i + 1 - log(log(sqrt(u2 + v2))) / M_LOG2;
-    return texture(colormap, fract(smoothI / COLOR_ITER_LOOP)).rgb;
+    return texture(colormap, fract(sqrt(smoothI) / COLOR_ITER_LOOP)).rgb;
   };
 }
 

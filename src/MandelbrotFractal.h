@@ -18,16 +18,16 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 	ColoringType type = EXPONENTIAL;
 	//For interpolation type
 	float exponent = 0.98;
-	float iterationLoop = 45;
+	float iterationLoop = 30;
 	std::vector<Color> colors;
 	std::vector<float> colorMap; //Vector which maps iteration to color, is sent as texture to compute shader
 
 	FractalColoring()
 	{
-		colors.push_back(Color {1.0, 1.0, 1.0, 0});
-		colors.push_back(Color {1.0, 0.0, 0.0, 15});
-		colors.push_back(Color {1.0, 0.0, 0.0, 30});
-		colors.push_back(Color {0.0, 0.0, 1.0, 45});
+		colors.push_back(Color {1/255.0f, 9/255.0f, 108/255.0f, 0});
+		colors.push_back(Color {1.0, 1.0, 1.0, 10});
+		colors.push_back(Color {234/255.0f, 192/255.0f, 110/255.0f, 20});
+		colors.push_back(Color {0.0, 5/255.0, 96/255.0, 30});
 		calculateColorMap();
 	}
 	FractalColoring(std::vector<Color>& colors, int iterationLoop, float exponent = 0.98)
@@ -55,7 +55,7 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 				colorMap[i*4 + 0] = lerp(colors[c].color[0], colors[c+1].color[0], t); 
 				colorMap[i*4 + 1] = lerp(colors[c].color[1], colors[c+1].color[1], t); 
 				colorMap[i*4 + 2] = lerp(colors[c].color[2], colors[c+1].color[2], t); 
-				colorMap[i*4 + 0] = 1;
+				colorMap[i*4 + 3] = 1;
 				i++;
 			}
 		}

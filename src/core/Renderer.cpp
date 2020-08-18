@@ -161,6 +161,7 @@ void Renderer::initOpenGL()
 	glewInit();
 	
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_FRAMEBUFFER_SRGB);
 	glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
 
 	glGenVertexArrays(1, &VAO);
