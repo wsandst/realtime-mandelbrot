@@ -11,19 +11,24 @@ struct Color
 	int iterations;
 };
 
-enum ColoringType {INTERPOLATE, CIRCLE};
+enum ColoringType {LINEAR, EXPONENTIAL, CIRCLE};
 
 struct FractalColoring //Represents a coloring scheme for mandelbrot
 {
-	ColoringType type = INTERPOLATE;
+	ColoringType type = EXPONENTIAL;
 	//For interpolation type
 	float exponent = 0.98;
-	float iterationLoop = 10;
+	float iterationLoop = 45;
 	std::vector<Color> colors;
-	std::vector<char> colorMap; //Vector which maps iteration to color, is sent as texture to compute shader
+	std::vector<float> colorMap; //Vector which maps iteration to color, is sent as texture to compute shader
+
 	FractalColoring()
 	{
-
+		colors.push_back(Color {1.0, 1.0, 1.0, 0});
+		colors.push_back(Color {1.0, 0.0, 0.0, 15});
+		colors.push_back(Color {1.0, 0.0, 0.0, 30});
+		colors.push_back(Color {0.0, 0.0, 1.0, 45});
+		calculateColorMap();
 	}
 	FractalColoring(std::vector<Color>& colors, int iterationLoop, float exponent = 0.98)
 	{
@@ -31,9 +36,33 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 		this->iterationLoop = iterationLoop;
 		this->exponent = exponent;
 	}
-	void calculateColorMap()
-	{
 
+	void calculateColorMap() //Generate a color map for the iterations based on the vector of colors
+	{
+		//X -> Y -> Z -> X ...
+		colorMap = std::vector<float>(iterationLoop*4);
+		int i = 0;
+		for (size_t c = 0; c < colors.size() && i < iterationLoop; c++) //Go through all colors
+		{
+			while (i < colors[c + 1].iterations)
+			{
+				int deltaI = colors[c + 1].iterations - colors[c].iterations;
+				float t = float(i) / deltaI;; //Linear interpolation
+				if (type == EXPONENTIAL) //Apply t [0, 1] to an exponential function determined by the variable exponent
+					t = (std::pow(exponent, t) - 1) / (exponent - 1);
+
+				//Interpolate colors
+				colorMap[i*4 + 0] = lerp(colors[c].color[0], colors[c+1].color[0], t); 
+				colorMap[i*4 + 1] = lerp(colors[c].color[1], colors[c+1].color[1], t); 
+				colorMap[i*4 + 2] = lerp(colors[c].color[2], colors[c+1].color[2], t); 
+				colorMap[i*4 + 0] = 1;
+				i++;
+			}
+		}
+	}
+private:
+	float lerp(float v0, float v1, float t) {
+		return v0 + t * (v1 - v0);
 	}
 };
 

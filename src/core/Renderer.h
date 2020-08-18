@@ -83,6 +83,7 @@ public:
 
 	void updateTextVBO(bool create=false);
 
+	void updateMandelbrotColormap();
 
 private:
 	int minimizedWidth = 1000, minimizedHeight = 1000;
@@ -97,7 +98,7 @@ private:
 
 	//Vertex + fragment shader which covers the screen in a texture
     Shader screenTextureShader;
-	unsigned int VAO, VBO, textureOutput, skyboxTex;
+	unsigned int VAO, VBO, textureFramebufferOutput, textureMandelbrotColorMap;
 
 	//Text related
 	Shader textShader;

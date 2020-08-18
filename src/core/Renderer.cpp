@@ -16,6 +16,15 @@ Renderer::~Renderer()
 {
 }
 
+void Renderer::updateMandelbrotColormap()
+{
+	mandelbrot.color.calculateColorMap();
+	// Mandelbrot iteration color map
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(0, textureMandelbrotColorMap);
+	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.color.colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.color.colorMap[0]);
+}
+
 ///@brief Update the current deltatime of the frame, at the end of the frame
 void Renderer::updateDeltatime()
 {
@@ -71,22 +80,28 @@ void Renderer::draw()
 	screenComputeShader.setFloat("viewWidth", mandelbrot.zoom * mandelbrot.viewWidth);
 	screenComputeShader.setFloat("viewHeight", mandelbrot.zoom * mandelbrot.viewHeight);
 
-	int framebufferTexLocation = glGetUniformLocation(screenComputeShader.ID, "framebuffer");
-	glUniform1i(framebufferTexLocation, 0);
-
+	//Output bitmap texture
+	screenComputeShader.setInt("framebuffer", 0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureOutput);
+	glBindTexture(GL_TEXTURE_2D, textureFramebufferOutput);
 
-	 // launch compute shaders!
+	//Mandelbrot iteration color map texture
+	screenComputeShader.setInt("colormap", 1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_1D, textureMandelbrotColorMap);
+
+	//Launch compute shader!
 	glDispatchCompute((GLuint)windowWidth*MSAALevel, (GLuint)windowHeight*MSAALevel, 1);
 	
-	// make sure writing to image has finished before read
+	//Make sure writing to image has finished before read
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
 	glActiveTexture(GL_TEXTURE0);
 	screenTextureShader.use();
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	//std::cout << "OpenGL Status: " << glGetError() << "\n";
 
 }
 
@@ -97,18 +112,33 @@ void Renderer::initScreenComputeShader()
 	screenTextureShader = Shader("shaders/screentexture.vert", "shaders/screentexture.frag");
 	textShader = Shader("shaders/text.vert", "shaders/text.frag");
 
-	//Compute shader
-	// dimensions of the image
-	glGenTextures(1, &textureOutput);
+	//Compute shader output
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textureOutput);
+	glGenTextures(1, &textureFramebufferOutput);
+	glBindTexture(GL_TEXTURE_2D, textureFramebufferOutput);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, windowWidth*MSAALevel, windowHeight*MSAALevel, 0, GL_RGBA, GL_FLOAT,
 		NULL);
-	glBindImageTexture(0, textureOutput, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+	glBindImageTexture(0, textureFramebufferOutput, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+
+	std::cout << "Init: OpenGL Status: " << glGetError() << "\n";
+
+	// Mandelbrot iteration color map
+	glActiveTexture(GL_TEXTURE1);
+	glGenTextures(1, &textureMandelbrotColorMap);
+	glBindTexture(GL_TEXTURE_1D, textureMandelbrotColorMap);
+	glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.color.colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.color.colorMap[0]);
+	glBindTexture(0, textureMandelbrotColorMap);
+
+	std::cout << "Init: OpenGL Status: " << glGetError() << "\n";
 }
 
 ///@brief Initiate the window, OpenGL and the FreeType font library
@@ -138,12 +168,6 @@ void Renderer::initOpenGL()
 	
 	//Wireframes
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glViewport(0, 0, windowWidth, windowHeight);
 }

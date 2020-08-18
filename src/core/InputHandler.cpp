@@ -42,16 +42,20 @@ void InputHandler::handleInput(float deltaTime)
 				renderer.mandelbrot.iterations /= 2;
 				break;
 			case SDLK_o: //Decrease color exponent
-				renderer.mandelbrot.color.exponent /= 2;
+				renderer.mandelbrot.color.exponent /= 1.25;
+				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_p: //Increase color exponent
-				renderer.mandelbrot.color.exponent *= 2;
+				renderer.mandelbrot.color.exponent *= 1.25;
+				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_u: //Decrease iteration loop
-				renderer.mandelbrot.color.iterationLoop /= 2;
+				renderer.mandelbrot.color.iterationLoop /= 1.25;
+				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_i: //Increase color exponent
-				renderer.mandelbrot.color.iterationLoop *= 2;
+				renderer.mandelbrot.color.iterationLoop *= 1.25;
+				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_SPACE: //Move up
 				camera.keyUp = true;
