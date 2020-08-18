@@ -2,6 +2,12 @@
 #include <vector>
 #include <algorithm>
 
+// Todo
+// Fix changing resolution
+// More presets with names
+// Fix README file, take nice screenshots
+// Investigate double precision
+
 const float MANDELBROT_INITIAL_X = -2.25;
 const float MANDELBROT_INITIAL_Y = -1.5;
 
@@ -24,17 +30,14 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 
 	FractalColoring()
 	{
-		colors.push_back(Color {1/255.0f, 9/255.0f, 108/255.0f, 0});
-		colors.push_back(Color {1.0, 1.0, 1.0, 10});
-		colors.push_back(Color {234/255.0f, 192/255.0f, 110/255.0f, 20});
-		colors.push_back(Color {0.0, 5/255.0, 96/255.0, 30});
-		calculateColorMap();
+
 	}
-	FractalColoring(std::vector<Color>& colors, int iterationLoop, float exponent = 0.98)
+	FractalColoring(std::vector<Color>& colors, float exponent = 0.98)
 	{
 		this->colors = colors;
-		this->iterationLoop = iterationLoop;
+		this->iterationLoop = colors[colors.size()-1].iterations;
 		this->exponent = exponent;
+		calculateColorMap();
 	}
 
 	void calculateColorMap() //Generate a color map for the iterations based on the vector of colors
@@ -66,6 +69,7 @@ private:
 	}
 };
 
+
 class MandelbrotFractal
 {
 public:
@@ -76,10 +80,11 @@ public:
     double viewWidth = 3;
     double viewHeight = 3;
 
-	int iterations = 50;
-
-	FractalColoring color;
+	int iterations = 150;
 	
+	std::vector<FractalColoring> presets;
+	int currentPreset = 0;
+
 	void zoomByFactor(float zoomFactor, float x, float y)
 	{
 		zoom *= zoomFactor;
@@ -95,4 +100,33 @@ public:
     {
         return viewY + cameraRelativeY * zoom;
     }
+
+	void switchPreset(int increment)
+	{
+		currentPreset = (currentPreset + increment) % presets.size();
+	}
+
+	FractalColoring& getColoring()
+	{
+		return presets[currentPreset];
+	}
+
+	MandelbrotFractal()
+	{
+		//Setup presets
+		//Midnight blue: dark blue, white, orange
+		std::vector<Color> midnightBlue = {
+			Color {1/255.0f, 9/255.0f, 108/255.0f, 0},
+			Color {1.0, 1.0, 1.0, 10},
+			Color {234/255.0f, 192/255.0f, 110/255.0f, 20},
+			Color {0.0, 5/255.0, 96/255.0, 30}};
+		presets.push_back(FractalColoring(midnightBlue));
+
+		std::vector<Color> volcano = {
+			Color {0.0f, 0.0f, 0.0f, 0},
+			Color {191/255.0f, 14/255.0f, 6/255.0f, 5},
+			Color {253/255.0f, 181/255.0f, 0.0f, 10},
+			Color {0.0f, 0.0f, 0.0f, 30}};
+		presets.push_back(FractalColoring(volcano));
+	}
 };

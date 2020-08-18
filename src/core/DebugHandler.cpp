@@ -50,8 +50,9 @@ void DebugHandler::updateText()
 
         upperLeftContent.precision(2);
         upperLeftContent << "zoom: " << -std::log(renderer.mandelbrot.zoom) + 1 << "\n";
-        upperLeftContent << "colorexp: " << renderer.mandelbrot.color.exponent << "\n";
-        upperLeftContent << "colorloop: " << renderer.mandelbrot.color.iterationLoop << "\n";
+        upperLeftContent << "colorpreset: " << renderer.mandelbrot.currentPreset << "\n";
+        upperLeftContent << "colorexp: " << renderer.mandelbrot.getColoring().exponent << "\n";
+        upperLeftContent << "colorloop: " << renderer.mandelbrot.getColoring().iterationLoop << "\n";
         upperLeftContent << "performance: " << renderer.deltaTime << "ms\n";
         upperLeftContent << "render: " << renderer.renderPerformanceMs << " ms\n";
         upperLeftContent << "input: " << inputHandler.inputPerformanceMs << " ms\n";

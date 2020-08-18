@@ -18,11 +18,11 @@ Renderer::~Renderer()
 
 void Renderer::updateMandelbrotColormap()
 {
-	mandelbrot.color.calculateColorMap();
+	mandelbrot.getColoring().calculateColorMap();
 	// Mandelbrot iteration color map
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(0, textureMandelbrotColorMap);
-	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.color.colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.color.colorMap[0]);
+	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.getColoring().colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.getColoring().colorMap[0]);
 }
 
 ///@brief Update the current deltatime of the frame, at the end of the frame
@@ -70,8 +70,8 @@ void Renderer::draw()
 	screenComputeShader.use();
 
 	screenComputeShader.setInt("ITERATIONS", mandelbrot.iterations);
-	screenComputeShader.setInt("COLOR_ITER_LOOP", int(mandelbrot.color.iterationLoop));
-	screenComputeShader.setFloat("COLOR_EXPONENT", mandelbrot.color.exponent);
+	screenComputeShader.setInt("COLOR_ITER_LOOP", int(mandelbrot.getColoring().iterationLoop));
+	screenComputeShader.setFloat("COLOR_EXPONENT", mandelbrot.getColoring().exponent);
 
 	//Camera related
 	screenComputeShader.setFloat("viewX", mandelbrot.getViewX(camera.getPosition().x));
@@ -135,7 +135,7 @@ void Renderer::initScreenComputeShader()
 
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.color.colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.color.colorMap[0]);
+	glTexImage1D(GL_TEXTURE_1D, 0,  GL_RGBA32F, mandelbrot.getColoring().colorMap.size() / 4, 0, GL_RGBA, GL_FLOAT, &mandelbrot.getColoring().colorMap[0]);
 	glBindTexture(0, textureMandelbrotColorMap);
 
 	std::cout << "Init: OpenGL Status: " << glGetError() << "\n";

@@ -33,6 +33,14 @@ void InputHandler::handleInput(float deltaTime)
 			case SDLK_d: //Move right
 				camera.keyRight = true;
 				break;
+			case SDLK_m: //Switch presents, increment
+				renderer.mandelbrot.switchPreset(1);
+				renderer.updateMandelbrotColormap();
+				break;
+			case SDLK_n: //Switch presets, decrement
+				renderer.mandelbrot.switchPreset(-1);
+				renderer.updateMandelbrotColormap();
+				break;
 			case SDLK_q: //Decrease iterations
 				if (renderer.mandelbrot.iterations == 0)
 					renderer.mandelbrot.iterations = 1;
@@ -42,19 +50,19 @@ void InputHandler::handleInput(float deltaTime)
 				renderer.mandelbrot.iterations /= 2;
 				break;
 			case SDLK_o: //Decrease color exponent
-				renderer.mandelbrot.color.exponent /= 1.25;
+				renderer.mandelbrot.getColoring().exponent /= 1.25;
 				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_p: //Increase color exponent
-				renderer.mandelbrot.color.exponent *= 1.25;
+				renderer.mandelbrot.getColoring().exponent *= 1.25;
 				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_u: //Decrease iteration loop
-				renderer.mandelbrot.color.iterationLoop /= 1.25;
+				renderer.mandelbrot.getColoring().iterationLoop /= 1.25;
 				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_i: //Increase color exponent
-				renderer.mandelbrot.color.iterationLoop *= 1.25;
+				renderer.mandelbrot.getColoring().iterationLoop *= 1.25;
 				renderer.updateMandelbrotColormap();
 				break;
 			case SDLK_SPACE: //Move up
