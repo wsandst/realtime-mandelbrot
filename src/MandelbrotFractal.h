@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
 #include <algorithm>
+#include <string>
 
 // Todo
-// Fix changing resolution
+// Add iteration exponential 
 // More presets with names
 // Fix README file, take nice screenshots
 // Investigate double precision
@@ -22,6 +23,7 @@ enum ColoringType {LINEAR, EXPONENTIAL, CIRCLE};
 struct FractalColoring //Represents a coloring scheme for mandelbrot
 {
 	ColoringType type = EXPONENTIAL;
+	std::string name = "UNNAMED";
 	//For interpolation type
 	float exponent = 0.98;
 	float iterationLoop = 30;
@@ -32,9 +34,10 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 	{
 
 	}
-	FractalColoring(std::vector<Color>& colors, float exponent = 0.98)
+	FractalColoring(std::vector<Color>& colors, std::string name, float exponent = 0.98)
 	{
 		this->colors = colors;
+		this->name = name;
 		this->iterationLoop = colors[colors.size()-1].iterations;
 		this->exponent = exponent;
 		calculateColorMap();
@@ -63,6 +66,7 @@ struct FractalColoring //Represents a coloring scheme for mandelbrot
 			}
 		}
 	}
+	
 private:
 	float lerp(float v0, float v1, float t) {
 		return v0 + t * (v1 - v0);
@@ -116,19 +120,33 @@ public:
 	MandelbrotFractal()
 	{
 		//Setup presets
-		//Midnight blue: dark blue, white, orange
 		std::vector<Color> midnightBlue = {
 			Color {1/255.0f, 9/255.0f, 108/255.0f, 0},
 			Color {1.0, 1.0, 1.0, 10},
 			Color {234/255.0f, 192/255.0f, 110/255.0f, 20},
 			Color {0.0, 5/255.0, 96/255.0, 30}};
-		presets.push_back(FractalColoring(midnightBlue));
+		presets.push_back(FractalColoring(midnightBlue, "Midnight Blue"));
 
 		std::vector<Color> volcano = {
 			Color {0.0f, 0.0f, 0.0f, 0},
 			Color {191/255.0f, 14/255.0f, 6/255.0f, 5},
 			Color {253/255.0f, 181/255.0f, 0.0f, 10},
 			Color {0.0f, 0.0f, 0.0f, 30}};
-		presets.push_back(FractalColoring(volcano));
+		presets.push_back(FractalColoring(volcano, "Volcano"));
+
+		std::vector<Color> oceanlife = {
+			Color {1/255.0f, 104/255.0f, 179/255.0f, 0},
+			Color {0/255.0f, 179/255.0f, 95/255.0f, 5},
+			Color {204/255.0f, 224/255.0f, 103/255.0f, 15},
+			Color {1/255.0f, 104/255.0f, 179/255.0f, 30}};
+		presets.push_back(FractalColoring(oceanlife, "Ocean Life"));
+
+		std::vector<Color> colorsofcreation = {
+			Color {0.0f, 0.0f, 0.0f, 0},
+			Color {107/255.0f, 74/255.0f, 240/255.0f, 12},
+			Color {53/255.0f, 107/255.0f, 102/255.0f, 19},
+			Color {122/255.0f, 1/255.0f, 0/255.0f, 26},
+			Color {0.0f, 0.0f, 0.0f, 32}};
+		presets.push_back(FractalColoring(colorsofcreation, "Colors of Creation"));
 	}
 };
