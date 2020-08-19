@@ -88,9 +88,11 @@ public:
 	void zoomByFactor(float zoomFactor, float x, float y)
 	{
 		zoom *= zoomFactor;
-		double zoomChange = (zoom / zoomFactor) * 1.5 - zoom * 1.5; //Zoom width delta / 2, to adjust for center zooming
-		viewX = viewX + x * zoom + zoomChange;
-		viewY = viewY + y * zoom + zoomChange;
+		//Zoom viewport adjustment by delta * 0.5f, to adjust for center zooming
+		double zoomChangeWidth = ((zoom / zoomFactor) * viewWidth - zoom * viewWidth) * 0.5f;
+		double zoomChangeHeight = ((zoom / zoomFactor) * viewHeight - zoom * viewHeight) * 0.5f;
+		viewX = viewX + x * zoom + zoomChangeWidth;
+		viewY = viewY + y * zoom + zoomChangeHeight;
 	}
     double getViewX(float cameraRelativeX)
     {

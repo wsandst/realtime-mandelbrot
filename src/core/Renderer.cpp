@@ -322,6 +322,17 @@ void Renderer::updateResolution()
 
 	glViewport(0, 0, windowWidth, windowHeight);
 
+	//Mandelbrot viewport adjustment
+	float widthChange = float(windowWidth) / camera.windowWidth;
+	float heightChange = float(windowHeight) / camera.windowHeight;
+	std::cout << widthChange << " " << heightChange << "\n";
+	double deltaWidth = mandelbrot.viewWidth - mandelbrot.viewWidth * widthChange;
+	double deltaHeight = mandelbrot.viewHeight - mandelbrot.viewHeight * heightChange;
+	mandelbrot.viewWidth *= widthChange;
+	mandelbrot.viewHeight *= heightChange;
+	mandelbrot.viewX += deltaWidth * mandelbrot.zoom * 0.5f;
+	mandelbrot.viewY += deltaHeight * mandelbrot.zoom * 0.5f;
+
 	camera.windowWidth = windowWidth;
 	camera.windowHeight = windowHeight;
 
