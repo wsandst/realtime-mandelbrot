@@ -31,7 +31,7 @@ public:
 	//Render settings
 	const char* windowTitle = "OpenGL Compute Shader Starter";
 	const bool VSYNCEnabled = false;
-	const int MSAALevel = 2; //MSAA Antialiasing: 1 for none, 2 for 4x, 4 for 16x
+	const int MSAALevel = 4; //MSAA Antialiasing: 1 for none, 2 for 4x, 4 for 16x
 	//Toggleables from within the engine
 	bool displayWireframes = false;
 	bool displayText = true;

@@ -4,10 +4,8 @@
 #include <string>
 
 // Todo
-// Add iteration exponential 
-// More presets with names
 // Fix README file, take nice screenshots
-// Investigate double precision
+// Investigate higher precision
 
 const float MANDELBROT_INITIAL_X = -2.25;
 const float MANDELBROT_INITIAL_Y = -1.5;

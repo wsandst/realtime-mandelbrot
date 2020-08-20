@@ -1,13 +1,9 @@
-# OpenGL Compute Shader Starter Project using SDL2 with C++  
-This is a starter OpenGL Compute Shader project which I use as the base for various Compute Shader programs. It is very similar to [my normal opengl-starter](https://github.com/wsandst/opengl-starter), except for the addition of the compute shader features and removal of some of the more advanced 3D features.    
-## Features
-* Render a texture, generated from a compute shader, on the screen
-* Rendering text on the screen, from a loaded font using the FreeType library  
-* Easily modifiable main event/rendering loop and input function  
-* Freely moving camera with smooth movement. *Note: The camera is implemented, but the standard rendering setup does only render a 2D texture to the screen. If for example a 3D raytracer is desired, some additional code is needed.*  
-* Debug menu which lists performance stats, coordinates and more  
-* Many useful hotkeys to help development and debugging  
-* VSYNC and MSAA Antialiasing can be turned on easily in the Renderer class  
+# Realtime Mandelbrot using OpenGL Compute Shaders in C++ with SDL2 
+This is a realtime low-precision Mandelbrot navigator, utilizing the GPU through OpenGL Compute Shaders to deliver >30 FPS. It supports a few coloring methods and has a few presets built in, which can be cycled through with the hotkeys M and N. You cannot zoom very far due to precision issues with floats. Increased precision is being worked on.  
+
+## Images
+![Red Mandelbrot](https://i.ibb.co/WG7XyfV/20200820-114612.png)  
+![Purple Mandelbrot](https://i.ibb.co/4jKw77w/20200820-114716.png)  
 
 ## Dependencies
 **SDL2** - for window and input managment  
@@ -24,13 +20,17 @@ Included in the `external/` folder using git submodules:
 4. You can now compile/modify the project 
 
 ## Controls
-**R** - Hot reload shaders  
-**C** - Quit the program  
+**WSAD** - Movement  
+**Scroll** Zoom in/out  
+**M** - Go forward in color presets  
+**N** - Go backward in color presets  
+**E** - Increase iterations  
+**Q** - Decrease iterations  
 **Escape** - Unfocus window  
 **F1** - Toggle text rendering  
 **F2** - Take screenshot  
-**F3** - Toggle debug menu  
+**F3** - Toggle debug menu, contains Mandelbrot info  
 **F11** - Toggle fullscreen  
-**WSAD** - Movement  
-**Space/Shift** - Move up/down  
+**R** - Hot reload shaders  
+**C** - Quit the program  
 **Z/X** - Increase/Decrease max speed  
